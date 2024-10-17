@@ -1,0 +1,23 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        // 使用 polyfill ，指定 core-js 版本
+        "useBuiltIns": "usage",
+        "corejs": "3.37",
+        "targets": {
+          "ie": "11"
+        }
+      }
+    ],
+    ["@babel/preset-react", { "runtime": "automatic" }],
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    [
+      "import",
+      { "libraryName": "antd", "libraryDirectory": "es", "style": true }
+    ]
+  ]
+}

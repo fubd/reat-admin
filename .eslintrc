@@ -1,0 +1,44 @@
+// @typescript-eslint/eslint-plugin
+// @typescript-eslint/parser [推荐代替 tslint]
+// eslint-config-prettier
+// eslint-plugin-prettier [prettier 与 eslint 配合使用，使用 prettier 格式化代码，eslint 语法检查]
+// eslint-plugin-react [支持 react]
+// eslint 可用于语法检查（未使用变量，冗余代码等）和 代码格式化，但是 eslint 的无法针对 less 等文件进行格式化，所以使用 prettier 负责代码格式化的功能。
+// 这里使用 eslint-config-prettier 和 eslint-plugin-prettier 将二者结合使用，这样执行 eslint 命令时，即可同时进行 eslint 的语法检查和 prettier 的代码格式化。
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:prettier/recommended", // 使用prettier中的样式规范，且如果使得ESLint会检测prettier的格式问题，同样将格式问题以error的形式抛出
+    "plugin:react/jsx-runtime"
+  ],
+  "plugins": ["prettier", "@typescript-eslint"],
+  "parserOptions": {
+    //指定ESLint可以解析JSX语法
+    "ecmaVersion": 2019,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "no-unused-vars": 0,
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-explicit-any": 0,
+    "no-undef": "off",
+    "@typescript-eslint/no-unused-vars": "warn"
+  },
+  "env": {
+    "browser": true,
+    "mocha": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "18.0.0"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+.wrapper {
+  display: flex;
+  height: 100vh;
+
+  .left {
+    background-color: #4072EE;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    padding-top: 110px;
+    flex: 0 0 38.2%;
+
+    .welcome {
+      font-size: 28px;
+      margin-left: 80px;
+    }
+
+    .divider {
+      width: 88px;
+      height: 8px;
+      background-color: #fff;
+      margin-left: 80px;
+      margin-top: 16px;
+      margin-bottom: 24px;
+    }
+    
+    .signIn {
+      font-size: 132px;
+      line-height: 132px;
+      margin-left: 80px;
+    }
+  }
+
+  .formWrapper {
+    flex: 1;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+
+    .mainForm {
+      box-shadow: 0 8px 40px 0 #dedede;
+      background-color: #fff;
+      width: 488px;  // 默认宽度
+      padding: 32px;
+      border-radius: 4px;
+      position: relative;
+      top: 21%;
+      display: flex;
+      flex-direction: column;
+      align-self: flex-start;
+
+      @media screen and (max-width: 1600px){
+        width: 448px;
+      }
+
+      .title {
+        color: #1f212a;
+        font-weight: 500;
+        font-size: 18px;
+        margin-bottom: 32px;
+      }
+
+      .submitBtn {
+        background: linear-gradient(180deg, #679cf6 0%, #4072ee 100%);
+        height: 48px;
+      }
+    }
+  }
+}
