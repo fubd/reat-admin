@@ -27,7 +27,7 @@ function Index() {
     // 权限校验
     (async () => {
       fetchResourceList().then((res) => {
-        if (res.success && Array.isArray(res.data)) {
+        if (res.success && Array.isArray(res.data) && pathname !== '/') {
           if (!res.data.map((it) => it.path).includes(pathname)) {
             navigate('/noAuth', {replace: true});
           }
