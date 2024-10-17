@@ -2,17 +2,13 @@ import {Button, Dropdown, Input} from 'antd';
 import {ReactComponent as LogoSvg} from '@/assets/logo.svg';
 import {ReactComponent as StartSvg} from '@/assets/start.svg';
 import {BellOutlined, SearchOutlined, LogoutOutlined} from '@ant-design/icons';
-import type {MenuProps} from 'antd';
-import {useNavigate} from 'react-router-dom';
-import * as styles from './index.module.less';
 import {logout} from '@/utils/utils';
+import type {MenuProps} from 'antd';
+import * as styles from './index.module.less';
 
 const Header = () => {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     logout();
-    navigate('/login');
   };
 
   const menuItems: MenuProps['items'] = [
