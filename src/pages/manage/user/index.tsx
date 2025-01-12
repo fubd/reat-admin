@@ -95,7 +95,6 @@ function Index() {
       title: '重置密码',
       content: '确定重置密码？',
       onOk() {
-        console.log('>>>>', CryptoJS.MD5('123456' + MD5_SALT).toString());
         services.updateUser({id: record.id, password: CryptoJS.MD5('123456' + MD5_SALT).toString()}).then((res) => {
           if (res.success) {
             notification.success({message: '重置密码成功'});

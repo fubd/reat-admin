@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Modal} from 'antd';
+import {Badge, Modal} from 'antd';
 import classNames from 'classnames';
 import {ReactComponent as LogoSvg} from '@/assets/logo.svg';
 import * as AntIcons from '@ant-design/icons/lib/icons';
@@ -13,6 +13,7 @@ interface IProps {
 
 const customIcons = {
   'custom-logo': <LogoSvg />,
+  'custom-default': <Badge color="#4072EE" text="#f50" />,
 };
 
 const antIconNames = Object.keys(AntIcons).filter((it) => it.includes('Outlined'));

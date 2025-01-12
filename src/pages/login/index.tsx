@@ -28,23 +28,15 @@ const Login = () => {
 
   const onFinish = async (values: {username: string; password: string}) => {
     setLoading(true);
-    try {
-      const res = await fetchUserInfo(values);
-
-      if (res.success) {
-        notification.success({
-          message: '登录成功',
-        });
-        setUserInfo(res.data);
-        navigate('/statistics');
-      } else {
-        message.error(res.errorMessage || '登录失败');
-      }
-    } catch (error) {
-      message.error('登录失败');
-    } finally {
-      setLoading(false);
+    const res = await fetchUserInfo(values);
+    if (res.success) {
+      notification.success({
+        message: '登录成功',
+      });
+      setUserInfo(res.data);
+      navigate('/statistics');
     }
+    setLoading(false);
   };
 
   const onForget = () => {

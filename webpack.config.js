@@ -9,6 +9,7 @@ const chalk = require('chalk');
 const os = require('os');
 
 const HOSTNAME = 'http://localhost:4300';
+// const HOSTNAME = 'https://fubodong.com:9000/api';
 
 const isProd = process.env.NODE_ENV === 'production';
 

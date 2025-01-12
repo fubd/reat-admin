@@ -1,2 +1,3 @@
-export {default as Grid} from './Grid';
-export {default as PageHeader} from './PageHeader';
+export {default as Grid} from './grid';
+export {default as PageHeader} from './pageHeader';
+export {default as GridModal} from './gridModal';

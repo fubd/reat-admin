@@ -34,3 +34,4 @@ export const logout = () => {
   const navigate = getNavigate();
   navigate('/login');
 };
+
