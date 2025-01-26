@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Button, Divider, Space, Typography} from 'antd';
 import dayjs from 'dayjs';
 import {Grid, PageHeader} from '@components';
@@ -17,69 +17,67 @@ function Index() {
 
   const grid = useGrid(services, prefix);
 
-  const columns = useMemo(() => {
-    return [
-      {
-        title: '名称',
-        dataIndex: 'name',
-        key: 'name',
-        searchable: true,
+  const columns = [
+    {
+      title: '名称',
+      dataIndex: 'name',
+      key: 'name',
+      searchable: true,
+    },
+    {
+      title: '路径',
+      dataIndex: 'path',
+      key: 'path',
+      searchable: true,
+    },
+    {
+      title: '级别',
+      dataIndex: 'level',
+      key: 'level',
+      render: (text) => {
+        return text === 1 ? '父级' : '子级';
       },
-      {
-        title: '路径',
-        dataIndex: 'path',
-        key: 'path',
-        searchable: true,
+      width: 100,
+      selectable: true,
+      selectOptions: [
+        {label: '父级', value: 1},
+        {label: '子级', value: 2},
+      ],
+    },
+    {
+      title: '图标',
+      dataIndex: 'icon',
+      key: 'icon',
+    },
+    {
+      title: '排序',
+      dataIndex: 'sort',
+      key: 'sort',
+      width: 80,
+      sorter: true,
+    },
+    {
+      title: '更新时间',
+      sorter: true,
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      render: (value) => {
+        return dayjs(+value).format('YYYY-MM-DD HH:mm');
       },
-      {
-        title: '级别',
-        dataIndex: 'level',
-        key: 'level',
-        render: (text) => {
-          return text === 1 ? '父级' : '子级';
-        },
-        width: 100,
-        selectable: true,
-        selectOptions: [
-          {label: '父级', value: 1},
-          {label: '子级', value: 2},
-        ],
-      },
-      {
-        title: '图标',
-        dataIndex: 'icon',
-        key: 'icon',
-      },
-      {
-        title: '排序',
-        dataIndex: 'sort',
-        key: 'sort',
-        width: 80,
-        sorter: true,
-      },
-      {
-        title: '更新时间',
-        sorter: true,
-        dataIndex: 'updatedAt',
-        key: 'updatedAt',
-        render: (value) => {
-          return dayjs(+value).format('YYYY-MM-DD HH:mm');
-        },
-      },
-      {
-        title: '操作',
-        key: 'action',
-        render: (_, record) => (
-          <Space split={<Divider type="vertical" />}>
-            <a onClick={() => onEdit(record)}>编辑</a>
-            <a onClick={() => grid.openRemove(record.id)}>
-              <Typography.Text type="danger">删除</Typography.Text>
-            </a>
-          </Space>
-        ),
-      },
-    ];
-  }, []);
+    },
+    {
+      title: '操作',
+      key: 'action',
+      render: (_, record) => (
+        <Space split={<Divider type="vertical" />}>
+          <a onClick={() => onEdit(record)}>编辑</a>
+          <a onClick={() => grid.openRemove(record.id)}>
+            <Typography.Text type="danger">删除</Typography.Text>
+          </a>
+        </Space>
+      ),
+    },
+  ];
 
   useEffect(() => {
     fetchFirstResourceList();
@@ -118,16 +116,13 @@ function Index() {
         columns={columns}
         services={services}
         beforeSubmit={(values, postData) => postData(omit(values, 'iconType'))}
-        afterSubmit={() => {
-          fetchFirstResourceList();
-        }}
+        afterSubmit={fetchFirstResourceList}
         prefix={prefix}
         modalClassName={styles.formWrapper}
         renderForm={
           <ResourceForm form={grid} firstResourceList={firstResourceList} openPicker={() => setOpenPicker(true)} />
         }
       />
-
       <Picker
         open={openPicker}
         onCancel={() => setOpenPicker(false)}

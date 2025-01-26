@@ -95,27 +95,25 @@ export default (service: IService) => {
   }
 
   function getDataSource() {
-    requestAnimationFrame(() => {
-      const params = getParams();
+    const params = getParams();
 
-      setLoading(true);
-      service(params)
-        .then((res) => {
-          if (res.success) {
-            const {
-              data: {
-                data: dataSource,
-                pagination: {currentPage: current, perPage: pageSize, total},
-              },
-            } = res;
-            setDataSource(dataSource);
-            setPagination({current, pageSize, total: total});
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    });
+    setLoading(true);
+    service(params)
+      .then((res) => {
+        if (res.success) {
+          const {
+            data: {
+              data: dataSource,
+              pagination: {currentPage: current, perPage: pageSize, total},
+            },
+          } = res;
+          setDataSource(dataSource);
+          setPagination({current, pageSize, total: total});
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   function syncSearchParamsWithState() {
@@ -172,6 +170,7 @@ export default (service: IService) => {
 
   function handleResetAll() {
     resetFilteredText();
+    setPagination({current: 1});
   }
 
   const tableAction = {

@@ -129,14 +129,6 @@ function Grid<T extends Record<string, any>>({
     }) as TableColumnsType<T>;
   }, [columns, filteredText, filteredColumn]);
 
-  function onTagClose(key) {
-    grid.filterReset(key);
-  }
-
-  function onClearAll() {
-    grid.filterResetAll();
-  }
-
   function onTableChange(pagination, filters, sorter) {
     if (
       pagination.current === tableState.pagination.current &&
@@ -186,7 +178,7 @@ function Grid<T extends Record<string, any>>({
             const [key, nValue] = value.split('_');
             const col = columns.find((it) => it.key === key) as TableColumnType<T>;
             return (
-              <Tag closable key={key} style={{padding: '2px 16px'}} onClose={() => onTagClose('$$sort')}>
+              <Tag closable key={key} style={{padding: '2px 16px'}} onClose={() => grid.filterReset('$$sort')}>
                 {col?.title}: {{ascend: '升序', descend: '降序'}[nValue]}
               </Tag>
             );
@@ -196,12 +188,12 @@ function Grid<T extends Record<string, any>>({
             ? col.selectOptions?.find((it) => it.value?.toString?.() === value?.toString())?.label
             : value;
           return (
-            <Tag closable key={key} style={{padding: '2px 16px'}} onClose={() => onTagClose(key)}>
+            <Tag closable key={key} style={{padding: '2px 16px'}} onClose={() => grid.filterReset(key)}>
               {col?.title}: {nValue}
             </Tag>
           );
         })}
-        {!!filteredText.size && <a onClick={onClearAll}>清空</a>}
+        {!!filteredText.size && <a onClick={grid.filterResetAll}>清空</a>}
       </div>
       <Table
         {...tableState}
