@@ -14,3 +14,7 @@ declare module 'lodash' {
     isVoid(value: any): boolean;
   }
 }
+
+declare module 'valtio' {
+  function useSnapshot<T extends object>(p: T): T;
+}

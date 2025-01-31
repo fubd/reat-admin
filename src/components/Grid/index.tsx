@@ -129,11 +129,8 @@ function Grid<T extends Record<string, any>>({
     }) as TableColumnsType<T>;
   }, [columns, filteredText, filteredColumn]);
 
-  function onTableChange(pagination, filters, sorter) {
-    if (
-      pagination.current === tableState.pagination.current &&
-      pagination.pageSize === tableState.pagination.pageSize
-    ) {
+  function onTableChange(_, filters, sorter, {action}) {
+    if (action === 'sort' || action === 'filter') {
       grid.filter(
         _.chain({...filters, ...(sorter.order ? {$$sort: [sorter.columnKey + '_' + sorter.order]} : {})})
           .mapValues((v) => (Array.isArray(v) ? v.join() : undefined))

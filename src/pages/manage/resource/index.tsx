@@ -8,6 +8,7 @@ import ResourceForm from './resourceForm';
 import {omit} from 'lodash';
 import * as services from './service';
 import * as styles from './index.module.less';
+import {getMenuList} from '@/store/store';
 
 const prefix = '资源';
 
@@ -16,6 +17,10 @@ function Index() {
   const [firstResourceList, setFirstResourceList] = useState<API.ResourceItem[]>([]);
 
   const grid = useGrid(services, prefix);
+
+  useEffect(() => {
+    fetchFirstResourceList();
+  }, []);
 
   const columns = [
     {
@@ -79,10 +84,6 @@ function Index() {
     },
   ];
 
-  useEffect(() => {
-    fetchFirstResourceList();
-  }, []);
-
   function onEdit(record: any) {
     grid.setFieldsValue({...record, iconType: !!record?.icon});
     grid.openEdit();
@@ -116,7 +117,10 @@ function Index() {
         columns={columns}
         services={services}
         beforeSubmit={(values, postData) => postData(omit(values, 'iconType'))}
-        afterSubmit={fetchFirstResourceList}
+        afterSubmit={() => {
+          fetchFirstResourceList();
+          getMenuList({current: true});
+        }}
         prefix={prefix}
         modalClassName={styles.formWrapper}
         renderForm={
