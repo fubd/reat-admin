@@ -20,15 +20,11 @@ export interface TableInstance {
   filter: (filters: Record<string, any>) => void;
   filterReset: (dataIndex: any) => void;
   filterResetAll: () => void;
-  removeFilteredText: (dataIndex: any) => void;
   refresh: () => void;
-  getTableState: () => {
-    pagination: IPagination;
-    loading: boolean;
-    dataSource: any[];
-    onChange: (prePagination: IPagination) => void;
-    filteredText: Map<any, any>;
-  };
+  pagination: IPagination;
+  loading: boolean;
+  dataSource: any[];
+  filteredText: Map<any, any>;
 }
 
 export default (service: IService) => {
@@ -148,16 +144,7 @@ export default (service: IService) => {
     });
   }
 
-  function onChange(prePagination) {
-    const nextPagination = {
-      pageNo: prePagination.current,
-      pageSize: prePagination.pageSize,
-    };
-    setPagination(nextPagination);
-  }
-
   function handleFilter(filters: Record<string, any>) {
-    console.log('filters', filters);
     setFilteredTextAll(new Map(Object.entries(filters)));
     setPagination({current: 1});
   }
@@ -175,22 +162,16 @@ export default (service: IService) => {
     filter: handleFilter,
     filterReset: handleReset,
     filterResetAll: handleResetAll,
-    removeFilteredText,
     refresh: getDataSource,
   };
 
   return [
     {
       ...tableAction,
-      getTableState: () => {
-        return {
-          pagination,
-          loading,
-          dataSource,
-          onChange,
-          filteredText,
-        };
-      },
+      pagination,
+      loading,
+      dataSource,
+      filteredText,
     },
   ];
 };

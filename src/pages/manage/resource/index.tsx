@@ -77,7 +77,7 @@ function Index() {
       render: (_, record) => (
         <Space split={<Divider type="vertical" />}>
           <a onClick={() => onEdit(record)}>编辑</a>
-          <a onClick={() => grid.openRemove(record.id)}>
+          <a onClick={() => grid.openRemove(record.id, record.name)}>
             <Typography.Text type="danger">删除</Typography.Text>
           </a>
         </Space>

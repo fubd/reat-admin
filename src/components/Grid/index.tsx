@@ -38,8 +38,7 @@ function Grid<T extends Record<string, any>>({
 }: IProps<T>) {
   const grid = gridInstance || useGrid(services, prefix);
 
-  const {scrollY, modalState, cancelModal} = grid;
-  const {filteredText, ...tableState} = grid.getTableState();
+  const {scrollY, modalState, closeModal, filteredText, dataSource, loading, pagination} = grid;
 
   const nextColumns = useMemo(() => {
     return columns.map((it: TableColumnType<T>) => {
@@ -135,7 +134,7 @@ function Grid<T extends Record<string, any>>({
     const service = modalState.type === 'add' ? services.add : services.edit;
     service(params).then((res) => {
       if (res.success) {
-        cancelModal();
+        closeModal();
         grid.resetFields();
         grid.refresh();
         afterSubmit?.();
@@ -162,8 +161,9 @@ function Grid<T extends Record<string, any>>({
     <div>
       <FilterBar columns={columns} grid={grid} filteredText={filteredText} />
       <Table
-        {...tableState}
-        dataSource={scrollY === 'auto' ? [] : tableState.dataSource}
+        pagination={pagination}
+        loading={loading}
+        dataSource={scrollY === 'auto' ? [] : dataSource}
         onChange={onTableChange}
         columns={nextColumns}
         rowKey="id"
@@ -174,7 +174,7 @@ function Grid<T extends Record<string, any>>({
         title={modalState.title + prefix}
         open={modalState.open}
         className={modalClassName || ''}
-        onCancel={cancelModal}
+        onCancel={closeModal}
         onOk={onSubmit}
       >
         {cloneElement(renderForm, {grid})}
