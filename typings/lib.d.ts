@@ -6,6 +6,7 @@ declare module 'antd' {
     searchable?: boolean;
     selectable?: boolean;
     selectOptions?: DefaultOptionType[];
+    selectMode?: 'multiple' | 'tags';
   }
 }
 

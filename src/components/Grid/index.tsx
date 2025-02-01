@@ -1,9 +1,11 @@
 import useGrid, {GridInstance} from '@/hooks/useGrid';
 import {FilterOutlined, SearchOutlined} from '@ant-design/icons';
-import {Button, Input, Modal, Select, Space, Table, TableColumnType, TableColumnsType, Tag} from 'antd';
+import {Button, Input, Modal, Space, Table, TableColumnType, TableColumnsType} from 'antd';
 import _ from 'lodash';
 import {cloneElement, useMemo} from 'react';
 import Highlighter from 'react-highlight-words';
+import SelectDropdown from './selectDropdown';
+import FilterBar from './filterBar';
 
 interface Services {
   query: any;
@@ -90,24 +92,13 @@ function Grid<T extends Record<string, any>>({
           ...commonProps,
           filterIcon: (filtered: boolean) => <FilterOutlined style={{color: filtered ? '#4072EE' : undefined}} />,
           filterDropdown: ({selectedKeys, setSelectedKeys, confirm, clearFilters}: any) => (
-            <div style={{padding: 8}} onKeyDown={(e) => e.stopPropagation()}>
-              <Select
-                showSearch
-                filterOption={(input, option) =>
-                  ((option?.label as string) ?? '').toLowerCase().includes(input.toLowerCase())
-                }
-                placeholder={it.title as string}
-                value={selectedKeys[0] ? `${selectedKeys[0]}` : undefined}
-                options={it.selectOptions}
-                style={{width: '100%'}}
-                onSelect={(v) => {
-                  setSelectedKeys([v] as string[]);
-                  confirm();
-                }}
-                allowClear
-                onClear={() => clearFilters?.({confirm: true, closeDropdown: true})}
-              />
-            </div>
+            <SelectDropdown
+              col={it}
+              selectedKeys={selectedKeys}
+              setSelectedKeys={setSelectedKeys}
+              confirm={confirm}
+              clearFilters={clearFilters}
+            />
           ),
         };
       }
@@ -129,7 +120,7 @@ function Grid<T extends Record<string, any>>({
     }) as TableColumnsType<T>;
   }, [columns, filteredText, filteredColumn]);
 
-  function onTableChange(_, filters, sorter, {action}) {
+  function onTableChange(__, filters, sorter, {action}) {
     if (action === 'sort' || action === 'filter') {
       grid.filter(
         _.chain({...filters, ...(sorter.order ? {$$sort: [sorter.columnKey + '_' + sorter.order]} : {})})
@@ -169,29 +160,7 @@ function Grid<T extends Record<string, any>>({
 
   return (
     <div>
-      <div style={{marginBottom: 8}}>
-        {Array.from(filteredText).map(([key, value]) => {
-          if (key === '$$sort') {
-            const [key, nValue] = value.split('_');
-            const col = columns.find((it) => it.key === key) as TableColumnType<T>;
-            return (
-              <Tag closable key={key} style={{padding: '2px 16px'}} onClose={() => grid.filterReset('$$sort')}>
-                {col?.title}: {{ascend: '升序', descend: '降序'}[nValue]}
-              </Tag>
-            );
-          }
-          const col = columns.find((it) => it.key === key) as TableColumnType<T>;
-          const nValue = col?.selectable
-            ? col.selectOptions?.find((it) => it.value?.toString?.() === value?.toString())?.label
-            : value;
-          return (
-            <Tag closable key={key} style={{padding: '2px 16px'}} onClose={() => grid.filterReset(key)}>
-              {col?.title}: {nValue}
-            </Tag>
-          );
-        })}
-        {!!filteredText.size && <a onClick={grid.filterResetAll}>清空</a>}
-      </div>
+      <FilterBar columns={columns} grid={grid} filteredText={filteredText} />
       <Table
         {...tableState}
         dataSource={scrollY === 'auto' ? [] : tableState.dataSource}

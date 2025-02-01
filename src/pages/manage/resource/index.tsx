@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Button, Divider, Space, Typography} from 'antd';
+import {Button, Divider, Space, Typography, TableColumnsType} from 'antd';
 import dayjs from 'dayjs';
 import {Grid, PageHeader} from '@components';
 import useGrid from '@/hooks/useGrid';
@@ -45,9 +45,10 @@ function Index() {
       width: 100,
       selectable: true,
       selectOptions: [
-        {label: '父级', value: 1},
-        {label: '子级', value: 2},
+        {label: '父级', value: '1'},
+        {label: '子级', value: '2'},
       ],
+      selectMode: 'multiple',
     },
     {
       title: '图标',
@@ -82,7 +83,7 @@ function Index() {
         </Space>
       ),
     },
-  ];
+  ] as TableColumnsType<any>;
 
   function onEdit(record: any) {
     grid.setFieldsValue({...record, iconType: !!record?.icon});
