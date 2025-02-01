@@ -39,7 +39,7 @@ function Grid<T extends Record<string, any>>({
   const grid = gridInstance || useGrid(services, prefix);
 
   const {scrollY, modalState, cancelModal} = grid;
-  const {filteredColumn, filteredText, ...tableState} = grid.getTableState();
+  const {filteredText, ...tableState} = grid.getTableState();
 
   const nextColumns = useMemo(() => {
     return columns.map((it: TableColumnType<T>) => {
@@ -74,7 +74,7 @@ function Grid<T extends Record<string, any>>({
             </div>
           ),
           render: (text) =>
-            filteredColumn.has(dataIndex) ? (
+            filteredText.has(dataIndex) ? (
               <Highlighter
                 highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
                 searchWords={[filteredText.get(dataIndex)]}
@@ -118,7 +118,7 @@ function Grid<T extends Record<string, any>>({
       }
       return it;
     }) as TableColumnsType<T>;
-  }, [columns, filteredText, filteredColumn]);
+  }, [columns, filteredText]);
 
   function onTableChange(__, filters, sorter, {action}) {
     if (action === 'sort' || action === 'filter') {

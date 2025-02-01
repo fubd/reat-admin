@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useReducer, useState} from 'react';
+import {useEffect, useReducer, useState} from 'react';
 import {useMap, useUpdateEffect} from 'ahooks';
 import {useSearchParams} from 'react-router-dom';
 import _ from 'lodash';
@@ -27,7 +27,6 @@ export interface TableInstance {
     loading: boolean;
     dataSource: any[];
     onChange: (prePagination: IPagination) => void;
-    filteredColumn: Set<any>;
     filteredText: Map<any, any>;
   };
 }
@@ -59,7 +58,6 @@ export default (service: IService) => {
     {set: setFilteredText, remove: removeFilteredText, reset: resetFilteredText, setAll: setFilteredTextAll},
   ] = useMap<string, any>([]);
 
-  const filteredColumn = useMemo(() => new Set(filteredText.keys()), [filteredText]);
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
@@ -190,7 +188,6 @@ export default (service: IService) => {
           loading,
           dataSource,
           onChange,
-          filteredColumn,
           filteredText,
         };
       },
