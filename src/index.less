@@ -5,4 +5,28 @@ input:-webkit-autofill:focus {
 
 div[aria-hidden="true"] {
   display: none;
+}
+
+.grid-table {
+  .grid-table-reload {
+    margin-right: 8px;
+    color: @primary-color;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    font-size: 16px;
   }
+
+  .rotate {
+    animation: spin 0.3s linear;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

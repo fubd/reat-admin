@@ -2,6 +2,7 @@ import {useEffect, useReducer, useState} from 'react';
 import {useMap, useUpdateEffect} from 'ahooks';
 import {useSearchParams} from 'react-router-dom';
 import _ from 'lodash';
+import {ReloadOutlined} from '@ant-design/icons';
 
 export interface IService {
   (params: {pageNo?: number; pageSize?: number; [key: string]: any}): Promise<any>;
@@ -11,7 +12,6 @@ interface IPagination {
   current: number;
   pageSize: number;
   total: number;
-  showTotal: (total: number) => string;
   showSizeChanger: boolean;
   onChange: (p1: number, p2: number) => void;
 }
@@ -30,6 +30,8 @@ export interface TableInstance {
 export default (service: IService) => {
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
+  const [isRotating, setIsRotating] = useState(false);
+
   const [pagination, setPagination] = useReducer(
     (pre: IPagination, next: Partial<IPagination>) => {
       return {
@@ -41,7 +43,6 @@ export default (service: IService) => {
       current: 1,
       pageSize: 10,
       total: 0,
-      showTotal: (total) => `共 ${total} 条`,
       showSizeChanger: true,
       onChange: (current, pageSize) => {
         setPagination({current, pageSize});
@@ -70,6 +71,20 @@ export default (service: IService) => {
     tableAction.refresh();
   }, [filteredText, pagination.current, pagination.pageSize]);
 
+  function onReload() {
+    setIsRotating(true);
+    tableAction.refresh();
+    setTimeout(() => setIsRotating(false), 500);
+  }
+
+  function showTotal(total) {
+    return (
+      <div style={{display: 'flex', alignItems: 'center'}}>
+        <ReloadOutlined className={`grid-table-reload ${isRotating ? 'rotate' : ''}`} onClick={onReload} /> 共 {total}{' '}
+        条
+      </div>
+    );
+  }
   function getParams() {
     const {current, pageSize} = pagination;
 
@@ -168,7 +183,7 @@ export default (service: IService) => {
   return [
     {
       ...tableAction,
-      pagination,
+      pagination: Object.assign(pagination, {showTotal}),
       loading,
       dataSource,
       filteredText,
