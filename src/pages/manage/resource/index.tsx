@@ -5,7 +5,6 @@ import {Grid, PageHeader} from '@components';
 import useGrid from '@/hooks/useGrid';
 import Picker from './Picker';
 import ResourceForm from './resourceForm';
-import {omit} from 'lodash';
 import * as services from './service';
 import * as styles from './index.module.less';
 import {getMenuList} from '@/store/store';
@@ -76,7 +75,7 @@ function Index() {
       key: 'action',
       render: (_, record) => (
         <Space split={<Divider type="vertical" />}>
-          <a onClick={() => onEdit(record)}>编辑</a>
+          <a onClick={() => grid.openEdit({...record, iconType: record?.icon !== 'default'})}>编辑</a>
           <a onClick={() => grid.openRemove(record.id, record.name)}>
             <Typography.Text type="danger">删除</Typography.Text>
           </a>
@@ -84,16 +83,6 @@ function Index() {
       ),
     },
   ] as TableColumnsType<any>;
-
-  function onEdit(record: any) {
-    grid.setFieldsValue({...record, iconType: !!record?.icon});
-    grid.openEdit();
-  }
-
-  function onAdd() {
-    grid.setFieldsValue({type: 1, level: 1, iconType: false});
-    grid.openAdd();
-  }
 
   function fetchFirstResourceList() {
     services.fetchFirstResourceList().then((res) => {
@@ -103,12 +92,20 @@ function Index() {
     });
   }
 
+  function beforeSubmit(values, postData) {
+    if (!values.iconType) {
+      values.icon = 'default';
+    }
+    delete values.iconType;
+    postData(values);
+  }
+
   return (
     <div>
       <PageHeader
         title="添加资源"
         toolBar={
-          <Button type="primary" onClick={onAdd}>
+          <Button type="primary" onClick={grid.openAdd}>
             添加资源
           </Button>
         }
@@ -117,7 +114,7 @@ function Index() {
         grid={grid}
         columns={columns}
         services={services}
-        beforeSubmit={(values, postData) => postData(omit(values, 'iconType'))}
+        beforeSubmit={beforeSubmit}
         afterSubmit={() => {
           fetchFirstResourceList();
           getMenuList({current: true});

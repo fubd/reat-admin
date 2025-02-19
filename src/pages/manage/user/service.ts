@@ -42,4 +42,4 @@ export const createUser = async (data) => {
   return res;
 };
 
-export {fetchRoleList} from '../role/service';
+export {query as fetchRoleList} from '../resource/service';

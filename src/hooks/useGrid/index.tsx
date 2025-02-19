@@ -7,7 +7,7 @@ export interface GridInstance extends FormInstance, TableInstance {
   scrollY: any;
   modalState: ModalState;
   closeModal: () => void;
-  openEdit: () => void;
+  openEdit: (values: Record<string, any>) => void;
   openAdd: () => any;
   openRemove: (id: any, extra?: string) => any;
 }
@@ -22,7 +22,10 @@ export default function useGrid(services, prefix): GridInstance {
     scrollY,
     modalState,
     closeModal: () => setModal('cancel'),
-    openEdit: () => setModal('edit'),
+    openEdit: (values) => {
+      form.setFieldsValue(values);
+      setModal('edit');
+    },
     openAdd: () => setModal('add'),
     openRemove: (id, extra) => {
       Modal.confirm({

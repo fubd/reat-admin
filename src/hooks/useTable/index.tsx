@@ -100,7 +100,7 @@ export default (service: IService) => {
       delete params.$$sort;
     }
 
-    return _.chain(params).omitBy(_.isVoid).value();
+    return params;
   }
 
   function getDataSource() {

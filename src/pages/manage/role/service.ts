@@ -1,6 +1,6 @@
 import {request} from '@/utils/request';
 
-export const fetchRoleList = async (data) => {
+export const query = async (data) => {
   const res = await request<API.PaginationRes<API.RoleListResult>>({
     method: 'get',
     url: '/api/role/list',
@@ -10,7 +10,7 @@ export const fetchRoleList = async (data) => {
   return res;
 };
 
-export const deleteRole = async (id) => {
+export const remove = async (id) => {
   const res = await request<{id: string}>({
     method: 'post',
     url: '/api/role/delete',
@@ -22,7 +22,7 @@ export const deleteRole = async (id) => {
   return res;
 };
 
-export const updateRole = async (data) => {
+export const edit = async (data) => {
   const res = await request<{id: string}>({
     method: 'post',
     url: '/api/role/update',
@@ -32,7 +32,7 @@ export const updateRole = async (data) => {
   return res;
 };
 
-export const createRole = async (data) => {
+export const add = async (data) => {
   const res = await request<{id: string}>({
     method: 'post',
     url: '/api/role/create',

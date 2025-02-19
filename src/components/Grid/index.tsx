@@ -66,7 +66,7 @@ function Grid<T extends Record<string, any>>({
                 <Button type="primary" size="small" onClick={() => confirm()}>
                   搜索
                 </Button>
-                <Button size="small" onClick={() => clearFilters?.({confirm: true})}>
+                <Button size="small" onClick={() => clearFilters?.({confirm: true, closeDropdown: true})}>
                   重置
                 </Button>
               </Space>
@@ -174,8 +174,12 @@ function Grid<T extends Record<string, any>>({
         title={modalState.title + prefix}
         open={modalState.open}
         className={modalClassName || ''}
-        onCancel={closeModal}
+        onCancel={() => {
+          grid.resetFields();
+          closeModal();
+        }}
         onOk={onSubmit}
+        bodyStyle={{marginBottom: -24}}
       >
         {cloneElement(renderForm, {grid})}
       </Modal>

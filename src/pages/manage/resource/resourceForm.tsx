@@ -1,20 +1,23 @@
-import {Button, Form, FormInstance, Input, InputNumber, Radio, Select, Switch} from 'antd';
+import {Button, Form, Input, InputNumber, Radio, Select, Switch} from 'antd';
 import * as styles from './index.module.less';
 import {getIconCom} from './Picker';
+import {GridInstance} from '@/hooks/useGrid';
 
 interface IProps {
   openPicker: () => void;
-  form?: FormInstance;
+  form: GridInstance;
   firstResourceList: API.ResourceItem[];
-}
-
-export interface ResourceFormRef {
-  fetchFirstResourceList: () => void;
 }
 
 function ResourceForm({openPicker, firstResourceList, form}: IProps) {
   return (
-    <Form form={form as FormInstance} layout="horizontal" labelCol={{span: 4}} wrapperCol={{span: 20}}>
+    <Form
+      initialValues={{type: 1, level: 1, iconType: false}}
+      form={form}
+      layout="horizontal"
+      labelCol={{span: 4}}
+      wrapperCol={{span: 20}}
+    >
       <Form.Item label="类型" name="type">
         <Select options={[{label: '菜单', value: 1}]} />
       </Form.Item>
@@ -43,8 +46,8 @@ function ResourceForm({openPicker, firstResourceList, form}: IProps) {
         }
       </Form.Item>
 
-      <Form.Item label="自定义标签" name="iconType" valuePropName="checked">
-        <Switch></Switch>
+      <Form.Item label="自定义图标" name="iconType" valuePropName="checked">
+        <Switch />
       </Form.Item>
 
       <Form.Item
@@ -60,7 +63,6 @@ function ResourceForm({openPicker, firstResourceList, form}: IProps) {
               <div className={styles.iconFormItem}>
                 {getFieldValue('icon') ? getIconCom(getFieldValue('icon')) : null}
                 <Button onClick={openPicker}>选择图标</Button>
-                {/* <Button onClick={() => setFieldValue('icon', 'custom-default')}>使用默认图标</Button> */}
               </div>
             </Form.Item>
           )

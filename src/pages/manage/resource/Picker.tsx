@@ -13,7 +13,7 @@ interface IProps {
 
 const customIcons = {
   'custom-logo': <LogoSvg />,
-  'custom-default': <Badge color="#4072EE" text="#f50" />,
+  default: <Badge color="#4072EE" style={{minWidth: 'auto'}} />,
 };
 
 const antIconNames = Object.keys(AntIcons).filter((it) => it.includes('Outlined'));
