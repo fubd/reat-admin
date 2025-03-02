@@ -113,11 +113,11 @@ export default (service: IService) => {
           const {
             data: {
               data: dataSource,
-              pagination: {currentPage: current, perPage: pageSize, total},
+              pagination: {total},
             },
           } = res;
           setDataSource(dataSource);
-          setPagination({current, pageSize, total: total});
+          setPagination({total: total});
         }
       })
       .finally(() => {
@@ -152,7 +152,7 @@ export default (service: IService) => {
     const filters = JSON.parse(filtersStr);
     Object.keys(filters).forEach((key) => {
       if (key === 'current' || key === 'pageSize') {
-        setPagination({[key]: filters[key]});
+        setPagination({[key]: Number(filters[key])});
       } else {
         setFilteredText(key, filters[key]);
       }
@@ -183,7 +183,11 @@ export default (service: IService) => {
   return [
     {
       ...tableAction,
-      pagination: Object.assign(pagination, {showTotal}),
+      pagination: Object.assign(
+        pagination,
+        {current: Number(pagination.current), pageSize: Number(pagination.pageSize)},
+        {showTotal},
+      ),
       loading,
       dataSource,
       filteredText,

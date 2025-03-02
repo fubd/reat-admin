@@ -1,5 +1,5 @@
 import {Route, Routes, useNavigate} from 'react-router-dom';
-import {lazy} from 'react';
+import {Suspense, lazy} from 'react';
 import Layout from './layouts';
 import {setNavigate} from './utils/utils';
 import NotFound from './NotFound';
@@ -17,7 +17,14 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route
+        path="/login"
+        element={
+          <Suspense>
+            <Login />
+          </Suspense>
+        }
+      />
       <Route path="/" element={<Layout />}>
         <Route index element={<Statistics />} />
         <Route path="/statistics" element={<Statistics />} />
